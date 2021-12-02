@@ -4,5 +4,5 @@ Highlight [GMSH](https://gmsh.info/) mesh generator script syntax.
 
 ## Installation ##
 
-Package is available [MELPA](https://melpa.org/#/) archive.
+Package is available at [MELPA](https://melpa.org/#/) archive.
 To install it, type <kbd>M-x package-install RET multistate RET</kbd>.

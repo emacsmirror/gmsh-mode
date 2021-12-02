@@ -28,6 +28,8 @@
 
 ;; Highlight GMSH mesh generator script syntax.
 
+(require 'cc-mode)
+
 ;;; Code:
 
 (defvar gmsh-fontlock-builtin-functions
