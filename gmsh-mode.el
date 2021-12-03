@@ -324,7 +324,9 @@
    "EndIf"
    "Return"
    "Choices"
-   "Name")
+   "Name"
+   "Macro"
+   "Call")
   "List of GMSH keywords.")
 
 (defvar gmsh-fontlock-constants
@@ -335,18 +337,17 @@
    "GMSH_MINOR_VERSION"
    "GMSH_PATCH_VERSION"
    "MPI_Size"
-   "MPI_Rank")
+   "MPI_Rank"
+   "Mesh"
+   "Geometry"
+   "General"
+   "PostProcessing")
   "List of GMSH constants.")
 
 (defvar gmsh-font-lock-keywords
   (list
    (cons "!" 'font-lock-negation-char-face)
-   (list (concat
-	  "\\(?:^\\|;\\|=\\)\\s-*\\("
-	  (regexp-opt '("Mesh" "Geometry" "General" "PostProcessing"))
-	  "\\(?:\\.\\(?:\\sw\\|\\s_\\)+\\)+\\)")
-	 1
-	 'font-lock-constant-face)
+   (cons "\\bMesh\\b" 'font-lock-constant-face) ; increase priority for this constant
    (list "\\(Macro\\|Call\\)\\s-+\\(\\(?:\\sw\\|\\s_\\)+\\)\\b"
 	 '(1 font-lock-keyword-face)
 	 '(2 font-lock-function-name-face))
@@ -371,6 +372,7 @@
 ;;;###autoload
 (defun gmsh-mode-completion-at-point ()
   "GMSH function to be used for the hook `completion-at-point-functions'."
+  (interactive)
   (let* ((bds (bounds-of-thing-at-point 'symbol))
          (start (car bds))
          (end (cdr bds)))
