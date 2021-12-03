@@ -338,8 +338,6 @@
    "MPI_Rank")
   "List of GMSH constants.")
 
-
-
 (defvar gmsh-font-lock-keywords
   (list
    (cons "!" 'font-lock-negation-char-face)
@@ -364,14 +362,30 @@
     map)
   "GMSH keymap.")
 
+(defvar gmsh--completion-keywords
+  (delete-dups (mapcan #'split-string (append gmsh-fontlock-builtin-functions
+                                              gmsh-fontlock-keywords
+                                              gmsh-fontlock-constants)))
+  "GMSH completion list.")
+
+;;;###autoload
+(defun gmsh-mode-completion-at-point ()
+  "GMSH function to be used for the hook `completion-at-point-functions'."
+  (let* ((bds (bounds-of-thing-at-point 'symbol))
+         (start (car bds))
+         (end (cdr bds)))
+    (list start end gmsh--completion-keywords . nil)))
+
+;;;###autoload
 (define-derived-mode gmsh-mode c-mode "GMSH"
   "GMSH mesh generator major mode."
-  (kill-all-local-variables)
-  (setq major-mode 'gmsh-mode)
-  (setq mode-name "GMSH")
-  (set-syntax-table c-mode-syntax-table)
-  (setq-local comment-start "//")
-  (setq font-lock-defaults '(gmsh-font-lock-keywords nil t)))
+  :group 'gmsh
+  :syntax-table c-mode-syntax-table
+  (setq-local comment-start "//"
+              comment-padding 1
+              indent-line-function 'c-indent-line
+              font-lock-defaults '(gmsh-font-lock-keywords nil t))
+  (add-hook 'completion-at-point-functions 'gmsh-mode-completion-at-point nil 'local))
 (add-to-list 'auto-mode-alist '("\\.gmsh\\'" . gmsh-mode))
 (add-to-list 'auto-mode-alist '("\\.geo\\'" . gmsh-mode))
 
