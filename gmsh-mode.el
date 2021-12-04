@@ -1123,7 +1123,10 @@
               indent-line-function 'c-indent-line
               font-lock-defaults '(gmsh-font-lock-keywords nil t))
   (add-hook 'completion-at-point-functions 'gmsh-mode-completion-at-point nil 'local))
+
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.gmsh\\'" . gmsh-mode))
+;;;###autoload
 (add-to-list 'auto-mode-alist '("\\.geo\\'" . gmsh-mode))
 
 (provide 'gmsh-mode)
